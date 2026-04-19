@@ -54,20 +54,20 @@ module control_unit (
     logic jump_type;
     logic upper_type;
 
-    always_comb begin : inst_decoder
-        load_type = `OPCODE_LOAD == opcode ? 1'b1 : 1'b0;
-        s_type = `OPCODE_STORE == opcode ? 1'b1 : 1'b0;
-        i_type_ari = `OPCODE_I_TYPE == opcode ? 1'b1 : 1'b0;
-        r_type = `OPCODE_R_TYPE == opcode ? 1'b1 : 1'b0;
-        b_type = `OPCODE_BRANCH == opcode ? 1'b1 : 1'b0;
-        j_type = `OPCODE_JAL == opcode ? 1'b1 : 1'b0;
-        u_type = `OPCODE_LUI == opcode ? 1'b1 : 1'b0;
-    end
+    // TODO: FIXME
+    // always_comb begin : inst_decoder
+    //     load_type = `OPCODE_LOAD == opcode ? 1'b1 : 1'b0;
+    //     s_type = `OPCODE_STORE == opcode ? 1'b1 : 1'b0;
+    //     i_type_ari = `OPCODE_I_TYPE == opcode ? 1'b1 : 1'b0;
+    //     r_type = `OPCODE_R_TYPE == opcode ? 1'b1 : 1'b0;
+    //     b_type = `OPCODE_BRANCH == opcode ? 1'b1 : 1'b0;
+    //     j_type = `OPCODE_JAL == opcode ? 1'b1 : 1'b0;
+    //     u_type = `OPCODE_LUI == opcode ? 1'b1 : 1'b0;
+    // end
 
-    always_comb begin : blockName
-        reg_write = (r_type) ? 1'b1 : 1'b0;
-
-    end
+    // always_comb begin : blockName
+    //     reg_write = (r_type) ? 1'b1 : 1'b0;
+    // end
 
 
     always @(*) begin

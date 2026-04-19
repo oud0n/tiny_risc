@@ -16,7 +16,11 @@ module riscv32 (
     input  wire [`DATA_WIDTH-1:0] mem_rdata,  // メモリからの読み出しデータ
     output wire [`DATA_WIDTH-1:0] mem_addr,   // メモリのアドレス
     output wire                   mem_wen,    // メモリ書き込み有効
-    output wire [`DATA_WIDTH-1:0] mem_wdata   // メモリへの書き込みデータ
+    output wire [`DATA_WIDTH-1:0] mem_wdata,   // メモリへの書き込みデータ
+
+    input wire scan_en,
+    input wire scan_in,
+    output wire scan_out
 
 );
     // --- Wires for Data Path ---
@@ -27,8 +31,8 @@ module riscv32 (
     wire [`DATA_WIDTH-1:0] PC_plus4;
 
     // Control Unit Signals (Control Unitの出力)
-    wire RegWrite;
-    wire MemRead;
+    wire reg_write;
+    wire mem_read;
     wire ALUSrcA;
     wire ALUSrcB;
     wire [`ALU_CONTROL_WIDTH-1:0] ALU_control;
@@ -84,9 +88,9 @@ module riscv32 (
 
     control_unit ctrl_inst (
         .instruction(instruction_in),
-        .RegWrite   (RegWrite),
-        .MemRead    (MemRead),
-        .MemWrite   (mem_wen),
+        .reg_write   (reg_write),
+        .mem_read    (mem_read),
+        .mem_write   (mem_wen),
         .ALUSrcA    (ALUSrcA),
         .ALUSrcB    (ALUSrcB),
         .ALU_control(ALU_control),
@@ -121,7 +125,7 @@ module riscv32 (
         .read_data_a (rs1_data),
         .read_addr_b (rs2_addr),
         .read_data_b (rs2_data),
-        .write_enable(RegWrite),
+        .write_enable(reg_write),
         .write_addr  (rd_addr),
         .write_data  (wb_data)    // Write Backの結果を接続
     );
