@@ -18,7 +18,7 @@
 // 2. RISC-V 命令 Opcode (7-bit: inst[6:0])
 // ------------------------------------------------------------------
 `define OPCODE_LOAD 7'b0000011 // LW, LH, LB (I-type Load)
-`define OPCODE_I_TYPE_ARITH 7'b0010011 // ADDI, SLLI, SRLI, SRAI (I-type Arith)
+`define OPCODE_I_TYPE 7'b0010011 // ADDI, SLLI, SRLI, SRAI (I-type Arith)
 `define OPCODE_AUIPC 7'b0010111 // AUIPC (U-type)
 `define OPCODE_STORE 7'b0100011 // SW, SH, SB (S-type Store)
 `define OPCODE_R_TYPE 7'b0110011 // ADD, SUB, SLT, XOR, etc. (R-type)
@@ -68,6 +68,7 @@
 // 比較命令 (SLT, SLTU)
 `define ALU_SLT 4'h8
 `define ALU_SLTU 4'h9
+`define ALU_LUI 4'hA
 
 // 分岐比較 (Branch)
 // BEQ/BNE/BLT/BGE 命令の実行に必要な比較指示
@@ -78,6 +79,9 @@
 `define BR_BLTU 4'hE // Branch Less Than Unsigned (A <u B)
 `define BR_BGEU 4'hF // Branch Greater Than or Equal Unsigned (A >=u B)
 
+`define RESULT_SRC_ALU 2'b00  // ALUの結果を書き込む (デフォルト)
+`define RESULT_SRC_MEM 2'b01  // メモリからの読み出しデータを書き込む (Load命令用)
+`define RESULT_SRC_PC4 2'b10  // PC+4の値を書き込む (JAL命令用)
 // ------------------------------------------------------------------
 // 6. Write Back Data Source (ResultSrc: 2-bit)
 // ------------------------------------------------------------------
