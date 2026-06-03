@@ -1,6 +1,0 @@
-{
-  "name": "RV32I SystemVerilog CPU Studio",
-  "description": "An interactive RISC-V CPU simulator and explorer in SystemVerilog, with assembly editing, step-by-step hardware simulation, registers, memory viewer, and downloadable clean SystemVerilog RTL modules.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
