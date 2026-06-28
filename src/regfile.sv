@@ -1,10 +1,13 @@
 
-// "The multi-ported 32x32 Register File. Keeps x0 locked to zero, providing dual reads and single synchronized write ports.",
 // ====================================================================
 // Module: regfile
 // Description: Multi-ported 32x32 general register file.
 //              Contains x0 hardwired to constant 0x0 at all times.
 // ====================================================================
+
+`default_nettype none
+
+`include "tiny_risc.svh"
 
 module regfile #(
     parameter XLEN = 32
@@ -15,7 +18,7 @@ module regfile #(
 
     input logic [4:0] addr_rs1,  // Read address index 1
     input logic [4:0] addr_rs2,  // Read address index 2
-    input logic [4:0] addr_rd,   // Write address index 
+    input logic [4:0] addr_rd,   // Write address index
 
     input logic [XLEN-1:0] write_data,
 
@@ -44,3 +47,5 @@ module regfile #(
         end
     end
 endmodule
+
+`default_nettype wire

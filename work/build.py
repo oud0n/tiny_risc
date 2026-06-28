@@ -14,9 +14,10 @@ design.add_idir("../src", fileset="rtl")
 for file in file_list:
     design.add_file(file, fileset="rtl")
 
+design.add_file("tiny_risc.sdc", fileset="sdc")
+
 project = ASIC(design)
-# project.add_fileset(["rtl", "sdc"])
-project.add_fileset(["rtl"])
+project.add_fileset(["rtl", "sdc"])
 
 skywater130_demo(project)
 
