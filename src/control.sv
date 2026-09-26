@@ -19,7 +19,8 @@ module control (
     output logic       mem_read,
     output logic       branch,
     output logic       jump,
-    output logic [3:0] alu_control
+    output logic [3:0] alu_control,
+    output logic       illegal_op
 );
 
     logic funct7_5;
@@ -37,6 +38,7 @@ module control (
         branch      = 1'b0;
         jump        = 1'b0;
         alu_control = `ALU_ADD;
+        illegal_op  = 1'b0;
 
         case (opcode)
             // R-Type operations (ADD, SUB, AND, OR, XOR, shifts etc.)
@@ -142,14 +144,39 @@ module control (
                 reg_write  = 1'b1;
                 alu_src    = 1'b1;
                 mem_to_reg = 2'b00;
-                // Immediate value shifted left will be routed straight through ALU
-                alu_control = 4'b1010; // Passthrough logic or customized add
+                alu_control = `ALU_LUI;
+            end
+
+            `OPCODE_AUIPC: begin
+                reg_write  = 1'b1;
+                mem_to_reg = 2'b11; // PC + U-immediate
+            end
+
+            // I-Type Sync: FENCE (treated as NOP in this architecture)
+            `OPCODE_MISC_MEM: begin
+                reg_write   = 1'b0;
+                alu_src     = 1'b0;
+                mem_to_reg  = 2'b00;
+                mem_write   = 1'b0;
+                mem_read    = 1'b0;
+                branch      = 1'b0;
+                jump        = 1'b0;
+                alu_control = `ALU_ADD;
+                illegal_op  = 1'b0;
+            end
+
+            // I-Type System: ECALL / EBREAK
+            `OPCODE_SYSTEM: begin
+                reg_write   = 1'b0;
+                alu_control = `ALU_ADD;
+                illegal_op  = 1'b1; // triggers execution environment trap / fault
             end
 
             default: begin
                 // Secure unknown operations
                 reg_write   = 1'b0;
                 alu_control = `ALU_ADD;
+                illegal_op  = 1'b1;
             end
         endcase
     end

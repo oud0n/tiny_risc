@@ -17,6 +17,7 @@ module tb_control;
     logic       tb_branch;
     logic       tb_jump;
     logic [3:0] tb_alu_control;
+    logic       tb_illegal_op;
 
     integer     fail_cnt = 0;
     integer     compare_cnt = 0;
@@ -33,7 +34,8 @@ module tb_control;
         .mem_read(tb_mem_read),
         .branch(tb_branch),
         .jump(tb_jump),
-        .alu_control(tb_alu_control)
+        .alu_control(tb_alu_control),
+        .illegal_op(tb_illegal_op)
     );
 
     // Setup waveform dump
@@ -198,11 +200,33 @@ module tb_control;
         $display("-- 8. LUI checks");
         check_ctrl(`OPCODE_LUI, 3'b000, 7'h00, 1'b1, 1'b1, 2'b00, 1'b0, 1'b0, 1'b0, 1'b0, `ALU_LUI, "U-Type LUI");
 
+        check_ctrl(`OPCODE_AUIPC, 3'b000, 7'h00, 1'b1, 1'b0, 2'b11, 1'b0, 1'b0, 1'b0, 1'b0, `ALU_ADD, "U-Type AUIPC");
+
         // ==========================================
-        // 9. Invalid/Undefined Opcode (Opcode: 7'b1111111)
+        // 9. Sync & System checks
         // ==========================================
-        $display("-- 9. Invalid opcode checks");
+        $display("-- 9. FENCE and SYSTEM checks");
+        check_ctrl(`OPCODE_MISC_MEM, 3'b000, 7'h00, 1'b0, 1'b0, 2'b00, 1'b0, 1'b0, 1'b0, 1'b0, `ALU_ADD, "I-Type FENCE (NOP)");
+        if (tb_illegal_op !== 1'b0) begin
+            fail_cnt = fail_cnt + 1;
+            $display("FAIL: FENCE should not be illegal_op");
+        end
+
+        check_ctrl(`OPCODE_SYSTEM, 3'b000, 7'h00, 1'b0, 1'b0, 2'b00, 1'b0, 1'b0, 1'b0, 1'b0, `ALU_ADD, "I-Type SYSTEM");
+        if (tb_illegal_op !== 1'b1) begin
+            fail_cnt = fail_cnt + 1;
+            $display("FAIL: SYSTEM should be illegal_op");
+        end
+
+        // ==========================================
+        // 10. Invalid/Undefined Opcode (Opcode: 7'b1111111)
+        // ==========================================
+        $display("-- 10. Invalid opcode checks");
         check_ctrl(7'b1111111, 3'b000, 7'h00, 1'b0, 1'b0, 2'b00, 1'b0, 1'b0, 1'b0, 1'b0, `ALU_ADD, "Invalid Opcode 7'b1111111");
+        if (tb_illegal_op !== 1'b1) begin
+            fail_cnt = fail_cnt + 1;
+            $display("FAIL: Invalid opcode should be illegal_op");
+        end
 
         $display("-------------------------------------------");
         display_result();

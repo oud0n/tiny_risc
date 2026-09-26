@@ -24,6 +24,7 @@
 `define OPCODE_BRANCH 7'b1100011 // BEQ, BNE, BLT, BGE, etc. (B-type)
 `define OPCODE_JALR 7'b1100111 // JALR (I-type Jump)
 `define OPCODE_JAL 7'b1101111 // JAL (J-type Jump)
+`define OPCODE_MISC_MEM 7'b0001111 // FENCE, FENCE.I (I-type Sync)
 `define OPCODE_SYSTEM 7'b1110011 // ECALL, EBREAK, CSRR* (I-type System)
 
 // ------------------------------------------------------------------

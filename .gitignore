@@ -1,3 +1,10 @@
-build
+build/
 *.old
 *.bk
+/pdf/
+*.pdf
+*.vvp
+*.vcd
+*.bin
+*.elf
+*.hex
