@@ -8,6 +8,7 @@ Instruction ROM and data RAM are implemented as register arrays (`words [0:WORDS
 - [Multicore Architecture Guide](docs/multicore-architecture.md): 4-core structure, fair round-robin arbitration, and synchronization.
 - [Implementation Guide](docs/implementation.md): Module contracts and verification suites.
 - [Work Log](docs/work_log.md): Record of implementation and verification steps.
+- [Tile-based Extension & DFT Roadmap (TODO)](docs/tile_dft_todo.md): Specification study, FF scale-up plan, and phased TODO list for DFT testbed.
 
 ## Simulations
 
